@@ -2,19 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using HRTask.Models;
+using HRTask.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using HRTask.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace HRTask.Areas.Identity.Pages.Account
 {
@@ -22,11 +17,15 @@ namespace HRTask.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<ApplicationUser> _usermanager;
+        private readonly IGroupScreensService _groupScreensService;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> usermanager, IGroupScreensService groupScreensService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _usermanager = usermanager;
+            _groupScreensService = groupScreensService;
         }
 
         /// <summary>
@@ -113,8 +112,25 @@ namespace HRTask.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
+                    var login = _usermanager.FindByEmailAsync(Input.Email).Result;
+                    if (login.GroupId_FK != null)
+                    {
+
+
+                        var rules = _groupScreensService.GetForSpecificGroup((int)login.GroupId_FK);
+                        List<Claim> claims = new List<Claim>();
+                        foreach (var item in rules)
+                        {
+                            claims.Add(new Claim(item.Screen.Name.ToLower() + "View", item.View.ToString()));
+                            claims.Add(new Claim(item.Screen.Name.ToLower() + "Create", item.Create.ToString()));
+                            claims.Add(new Claim(item.Screen.Name.ToLower() + "Update", item.Update.ToString()));
+                            claims.Add(new Claim(item.Screen.Name.ToLower() + "Delete", item.Delete.ToString()));
+                        }
+                        await _signInManager.SignInWithClaimsAsync(login, false, claims);
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

@@ -1,0 +1,9 @@
+﻿@model ApplicationUser
+
+<h1 class="text-center text-danger"> Do you want to delete User</h1>
+<h3 class="text-center">@Model.UserName</h3>
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input class="btn btn-danger" type="submit"/>
+</form>
+<a class="btn btn-success" asp-action="Index">Cancel</a>

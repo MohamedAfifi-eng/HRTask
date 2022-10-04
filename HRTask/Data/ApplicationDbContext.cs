@@ -11,9 +11,17 @@ namespace HRTask.Data
         public DbSet<Screen> Screens { get; set; }
         public DbSet<GroupScreens> GroupScreens { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<AnnualVacation> AnnualVacations { get; set; }
+        public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+
+            base.OnModelCreating(builder);
+        }
+
     }
 }

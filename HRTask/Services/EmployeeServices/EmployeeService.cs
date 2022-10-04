@@ -40,6 +40,11 @@ namespace HRTask.Services
             return _db.Employees;
         }
 
+        public IEnumerable<Employee> GetByName(string Name)
+        {
+            return _db.Employees.Where(x => x.Name.Contains(Name));
+        }
+
         public Employee? GetByNtionalId(string NationalId)
         {
             return _db.Employees.Where(x => x.NationalId == NationalId).FirstOrDefault();

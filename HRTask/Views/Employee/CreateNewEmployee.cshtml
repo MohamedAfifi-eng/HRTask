@@ -1,12 +1,14 @@
 ﻿@model Employee
 @{
     ViewData["Title"] = "CreateNewEmployee";
+	string action = Model == null ? "CreateNewEmployee" : "Edit";
 }
-<form  method="post" class="form form-horizontal">
+<form method="post" class="form form-horizontal" action="@action">
 	<div class="form-body">
 		<h4 class="form-section">
 			<i class="icon-user"></i> Personal Details
 		</h4>
+		<input type="hidden" name="Id" value="@Model?.Id" />
 		<div class="form-group row">
 			<label class="col-md-3 label-control" asp-for="Name" ></label>
 			<div class="col-md-9">

@@ -4,6 +4,7 @@ using HRTask.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRTask.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221001215622_create AnnualVac Table")]
+    partial class createAnnualVacTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,8 +153,7 @@ namespace HRTask.Data.Migrations
 
                     b.Property<string>("NationalId")
                         .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nationality")
                         .IsRequired()
@@ -173,33 +174,6 @@ namespace HRTask.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("HRTask.Models.EmployeeAttendance", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDayOff")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("TimeOfAttendance")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("TimeOfLeave")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("EmployeeAttendances");
                 });
 
             modelBuilder.Entity("HRTask.Models.Group", b =>
@@ -419,17 +393,6 @@ namespace HRTask.Data.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("HRTask.Models.EmployeeAttendance", b =>
-                {
-                    b.HasOne("HRTask.Models.Employee", "Employee")
-                        .WithMany("EmployeeAttendance")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("HRTask.Models.GroupScreens", b =>
                 {
                     b.HasOne("HRTask.Models.Group", "Group")
@@ -498,11 +461,6 @@ namespace HRTask.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HRTask.Models.Employee", b =>
-                {
-                    b.Navigation("EmployeeAttendance");
                 });
 
             modelBuilder.Entity("HRTask.Models.Group", b =>

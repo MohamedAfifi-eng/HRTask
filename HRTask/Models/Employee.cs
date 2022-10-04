@@ -43,6 +43,7 @@ namespace HRTask.Models
 
         [Display(Name = "الرقم القومي")]
         [Required(ErrorMessage = "هذا الحقل مطلوب ")]
+        [StringLength(maximumLength:14,MinimumLength =14,ErrorMessage = " يجب الا يقل الرقم القومى عن 14 رقم !")]
         public string NationalId { get; set; }
 
         [Display(Name = "تاريخ التعاقد")]
@@ -71,5 +72,8 @@ namespace HRTask.Models
         [MaxLength(250)]
         public string? Notes { get; set; }
 
+        #region Relations
+        public List<EmployeeAttendance> EmployeeAttendance { get; set; }
+        #endregion
     }
 }

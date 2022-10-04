@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HRTask.Data;
 using HRTask.Models;
+using Microsoft.AspNetCore.Authorization;
+using HRTask.Filters;
 
 namespace HRTask.Controllers
 {
+    [Authorize]
     public class ScreensController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,12 +23,15 @@ namespace HRTask.Controllers
         }
 
         // GET: Screens
+        [AccessFilter("screensView")]
         public async Task<IActionResult> Index()
         {
               return View(await _context.Screens.ToListAsync());
         }
 
         // GET: Screens/Details/5
+        [AccessFilter("screensView")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Screens == null)
@@ -44,6 +50,8 @@ namespace HRTask.Controllers
         }
 
         // GET: Screens/Create
+        [AccessFilter("screensCreate")]
+
         public IActionResult Create()
         {
             return View();
@@ -54,6 +62,8 @@ namespace HRTask.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AccessFilter("screensCreate")]
+
         public async Task<IActionResult> Create([Bind("Id,Name")] Screen screen)
         {
             if (ModelState.IsValid)
@@ -66,6 +76,8 @@ namespace HRTask.Controllers
         }
 
         // GET: Screens/Edit/5
+        [AccessFilter("screensEdit")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Screens == null)
@@ -86,6 +98,8 @@ namespace HRTask.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AccessFilter("screensEdit")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Screen screen)
         {
             if (id != screen.Id)
@@ -117,6 +131,8 @@ namespace HRTask.Controllers
         }
 
         // GET: Screens/Delete/5
+        [AccessFilter("screensDelete")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Screens == null)
@@ -137,6 +153,8 @@ namespace HRTask.Controllers
         // POST: Screens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AccessFilter("screensDelete")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Screens == null)

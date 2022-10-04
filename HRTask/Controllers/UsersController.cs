@@ -1,11 +1,14 @@
-﻿using HRTask.Models;
+﻿using HRTask.Filters;
+using HRTask.Models;
 using HRTask.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRTask.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IGroupService _groupService;
@@ -16,17 +19,23 @@ namespace HRTask.Controllers
             _groupService = groupService;
             _userManager = userManager;
         }
+        [AccessFilter("usersView")]
 
         public IActionResult Index()
         {
-            return View();
+         var model=   _userManager.Users.Select(x =>new { x.Id,x.UserName}).ToList();
+            return View(model);
         }
+        [AccessFilter("usersCreate")]
         public IActionResult Create()
         {
             ViewBag.groups = new SelectList(_groupService.GetAll(), "Id", "Name");
             return View();
         }
+
+
         [HttpPost]
+        [AccessFilter("usersCreate")]
         public async Task<IActionResult> Create(ApplicationUser model)
         {
             if (model.Email == null || model.GroupId_FK == null)
@@ -48,6 +57,29 @@ namespace HRTask.Controllers
             await _userManager.CreateAsync(model, model.Email);
             return RedirectToAction("index", "Home");
 
+        }
+        [AccessFilter("usersDelete")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var model= await _userManager.FindByIdAsync(id);
+            if (model==null)
+            {
+                return NotFound();
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [AccessFilter("usersDelete")]
+        [ActionName("Delete")]
+        public async Task<IActionResult> Deleteconfirm(string id)
+        {
+            var model = await _userManager.FindByIdAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            await _userManager.DeleteAsync(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
