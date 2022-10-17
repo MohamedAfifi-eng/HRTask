@@ -2,8 +2,10 @@
 
 namespace HRTask.Services
 {
-	public interface IEmployeeAttendanceService:DataService<EmployeeAttendance>
+	public interface IEmployeeAttendanceService:IDataService<EmployeeAttendance>
 	{
 		public IEnumerable<EmployeeAttendance> GetEmployeeAttendances(int Id);
-	}
+        public IEnumerable<EmployeeAttendance> GetAttendancesWithEmployeeInfo(DateTime start,DateTime end);
+
+    }
 }

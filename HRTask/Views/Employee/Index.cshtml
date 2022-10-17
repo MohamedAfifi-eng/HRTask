@@ -1,13 +1,20 @@
 ﻿@model IEnumerable<HRTask.Models.Employee>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Employees";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
     <a asp-action="CreateNewEmployee">Create New</a>
+    <form asp-action="EmployeesSalary">
+        <span>
+            <label for="date">chose the date</label>
+            <input id="date" name="date" type="date"/>
+            <input type="submit" value="Get Salaries" />
+        </span>
+    </form>
 </p>
 <form asp-action="SearchOnEmployees">
     <label for="">Search by name</label>

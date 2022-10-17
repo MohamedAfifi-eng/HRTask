@@ -1,6 +1,7 @@
 ﻿using HRTask.Filters;
 using HRTask.Models;
 using HRTask.Services;
+using HRTask.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace HRTask.Controllers
 
         [HttpPost]
         [AccessFilter("usersCreate")]
-        public async Task<IActionResult> Create(ApplicationUser model)
+        public async Task<IActionResult> Create(CreateUserVM model)
         {
             if (model.Email == null || model.GroupId_FK == null)
             {
@@ -49,12 +50,16 @@ namespace HRTask.Controllers
                 ModelState.AddModelError("Email", "الايميل موجود من قبل");
                 return View(model);
             }
-            model.EmailConfirmed = true;
-            model.PhoneNumberConfirmed = false;
-            model.TwoFactorEnabled = false;
-            model.AccessFailedCount = 0;
-            model.UserName = model.Email;
-            await _userManager.CreateAsync(model, model.Email);
+            ApplicationUser user = new ApplicationUser {
+                Email=model.Email,
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = false,
+            TwoFactorEnabled = false,
+            AccessFailedCount = 0,
+            UserName = model.Email,
+            GroupId_FK= model.GroupId_FK
+            };
+            await _userManager.CreateAsync(user, model.Password);
             return RedirectToAction("index", "Home");
 
         }

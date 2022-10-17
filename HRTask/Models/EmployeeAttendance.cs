@@ -8,11 +8,16 @@ namespace HRTask.Models
 		[Key]
 		public int Id { get; set; }
 		public int EmployeeId { get; set; }
+		[Display(Name ="Attend Time")]
 		public DateTime? TimeOfAttendance { get; set; }
-		public DateTime? TimeOfLeave { get; set; }
+        [Display(Name = "Leave Time")]
+        public DateTime? TimeOfLeave { get; set; }
+		
 		public bool IsDayOff { get; set; }
-
-		[ForeignKey(nameof(EmployeeId))]
+		public decimal? calculatedPonus { get; set; }
+		public decimal? discount { get; set; }
+		public decimal? DayCost { get; set; }
+        [ForeignKey(nameof(EmployeeId))]
 		public Employee? Employee { get; set; }
 	}
 }

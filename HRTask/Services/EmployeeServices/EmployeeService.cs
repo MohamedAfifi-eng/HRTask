@@ -1,5 +1,6 @@
 ﻿using HRTask.Data;
 using HRTask.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRTask.Services
 {
@@ -56,5 +57,10 @@ namespace HRTask.Services
             _db.SaveChanges();
             return Entity;
         }
+        public IEnumerable<Employee> GetEmployeesWithAttendance()
+        {
+            return _db.Employees.Include(x => x.EmployeeAttendance);
+        }
+
     }
 }

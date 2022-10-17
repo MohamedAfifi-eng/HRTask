@@ -14,16 +14,9 @@ namespace HRTask.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var val= context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == _Name);
-            if (val == null)
+            if (val == null|| !Convert.ToBoolean(val.Value))
             {
                 context.Result = new ContentResult() { Content = "AccessDenied" };
-            }
-            else
-            {
-                if (Convert.ToBoolean(val.Value) == false)
-                {
-                    context.Result = new ContentResult() { Content = "AccessDenied" };
-                }
             }
 
             base.OnActionExecuting(context);

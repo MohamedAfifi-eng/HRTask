@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "EmployeeAttendance";
 }
-
-<h1>EmployeeAttendance</h1>
-
+<div class="text-center">
+    <h1>Employee Attendance</h1>
+    <h2>Employee ID :@ViewBag.id</h2>
+    <h2>Employee Name :@ViewBag.empname</h2>
+</div>
 <p>
-    <a asp-action="AddEmployeeAttendance" asp-route-empId="@ViewBag.Id">Create New</a>
+    <a class="btn btn-primary" asp-action="AddEmployeeAttendance" asp-route-empId="@ViewBag.Id">Create New</a>
 </p>
-<table class="table">
+<table class="text-center table table-bordered table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -18,27 +20,28 @@
             <th>
                 @Html.DisplayNameFor(model => model.TimeOfLeave)
             </th>
-            <th>
+@*            <th>
                 @Html.DisplayNameFor(model => model.IsDayOff)
             </th>
-            <th></th>
+            <th></th>*@
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                
             <td>
                 @Html.DisplayFor(modelItem => item.TimeOfAttendance)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TimeOfLeave)
             </td>
-            <td>
+                @*   <td>
                 @Html.DisplayFor(modelItem => item.IsDayOff)
             </td>
             <td>
                     <a asp-action="DeleteEmployeeAttendance" asp-route-EmpAttendId="@item.Id">Delete</a>
-            </td>
+            </td>*@
         </tr>
 }
     </tbody>

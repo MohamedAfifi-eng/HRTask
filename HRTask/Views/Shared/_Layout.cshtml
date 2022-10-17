@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Boolean ViewEmployee = User.Claims.Any(x => x.Type.Contains("employeeView"));
+    Boolean AddEmployee = User.Claims.Any(x => x.Type.Contains("employeeCreate"));
+    DateTime today = DateTime.Now;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -37,38 +43,48 @@
             <div class="nav-container">
                 <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
                     <li class="nav-item home">
-                        <a href="#"><i class="icon-home"></i><span data-i18n="" class="menu-title">Dashboard</span></a>
+                        <a asp-controller="Home" asp-action="index"><i class="icon-home"></i><span data-i18n="" class="menu-title">Dashboard</span></a>
                     </li>
                     <li class="has-sub nav-item">
-                        <a href="#"><i class="icon-users"></i><span data-i18n="" class="menu-title"> Employees</span></a>
+
+                            <a href="#"><i class="icon-users"></i><span data-i18n="" class="menu-title"> Employees</span></a>
+                        
                         <ul class="menu-content">
-                            <li>
+                            @if (ViewEmployee)
+                            {
+                             <li>
                                 <a asp-controller="Employee" asp-action="index" class="menu-item"> <i class="icon-bar"></i> Employees Statistics</a>
                             </li>
-                            <li>
-                                <a asp-controller="Employee" asp-action="CreateNewEmployee" class="menu-item">Add Employee</a>
-                            </li>
+                            }
+                            @if (AddEmployee)
+                            {
+                                <li>
+                                    <a asp-controller="Employee" asp-action="CreateNewEmployee" class="menu-item">Add Employee</a>
+                                </li>
+                            }
                         </ul>
                     </li>
+                      @if (AddEmployee)
+                        {
+                        <li class=" nav-item">
+                            <a asp-controller="Employee" asp-action="CreateNewEmployee"><i class="icon-note"></i><span data-i18n="" class="menu-title">Add Employee</span></a>
+                        </li>
+                        }
                     <li class=" nav-item">
-                        <a asp-controller="Employee" asp-action="CreateNewEmployee"><i class="icon-note"></i><span data-i18n="" class="menu-title">Add Employee</span></a>
-                    </li>
-                    <li class=" nav-item">
-                        <a href="general_settings.html">
+                        <a asp-controller="GeneralSettings" asp-action="index">
                             <i class="icon-pie-chart"></i><span data-i18n="" class="menu-title">
                                 General Settings
                             </span>
                         </a>
                     </li>
                     <li class=" nav-item">
-                        <a href="attendance_ departure.html">
-                            <i class="icon-support"></i><span data-i18n="" class="menu-title">
+                        <a asp-controller="Employee" asp-action="AllEmployeeAttendance" asp-route-startdate="@today.AddDays(-today.Day+1)" asp-route-enddate="@(new DateTime(today.Year,today.AddMonths(1).Month,1).AddDays(-1))">
                                 Attendance
                             </span>
                         </a>
                     </li>
                     <li class=" nav-item">
-                        <a href="salary_report.html"><i class="icon-layers"></i><span data-i18n="" class="menu-title">Salary report</span></a>
+                        <a asp-controller="Employee" asp-action="EmployeesSalary" asp-route-date="@DateTime.Now.ToString("dd/MM/yyyy")"><i class="icon-layers"></i><span data-i18n="" class="menu-title">Salary report</span></a>
                     </li>
                     <li class=" nav-item">
                         <a asp-controller="Users" asp-action="index"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>

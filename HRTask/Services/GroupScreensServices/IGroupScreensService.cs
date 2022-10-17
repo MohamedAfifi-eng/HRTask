@@ -2,7 +2,7 @@
 
 namespace HRTask.Services
 {
-    public interface IGroupScreensService : DataService<GroupScreens>
+    public interface IGroupScreensService : IDataService<GroupScreens>
     {
         public IEnumerable<GroupScreens> GetForSpecificGroup(int id);
     }

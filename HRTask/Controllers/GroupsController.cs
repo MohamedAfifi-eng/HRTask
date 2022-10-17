@@ -46,6 +46,12 @@ namespace HRTask.Controllers
                 ModelState.AddModelError("Name", "إسم الجروب موجود من  قبل");
                 return View(group);
             }
+            group.GroupScreens?.RemoveAll(x =>
+            x.View==false&&
+            x.Create==false&&
+            x.Update==false&&
+            x.Delete==false
+            );
             _groupService.Create(group);
             return RedirectToAction(nameof(Index));
         }

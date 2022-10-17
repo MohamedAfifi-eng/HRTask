@@ -1,0 +1,54 @@
+﻿@model List<Employee>
+@{
+    ViewData["Title"] = "EmployeesSalary";
+    int ponus = 0;
+    int attendanceDayesCount = 0;
+    int Discount = 0;
+    int Total = 0;
+    int Daycost = 0;
+}
+
+<h1 class="text-center">Employees Salary</h1>
+<h3 class="text-center>Today is @DateTime.Now.ToString("dd/MM/yyyy")</h3>
+
+<section class="container">
+    <div class="row">
+        <table class="text-center table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Salary</th>
+                    <th>Attendance days</th>
+                    <th>Absent days</th>
+                    <th>Overtime hours</th>
+                    <th>Discount hours</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+
+                    ponus = (int)Model[i].EmployeeAttendance.Sum(x => x.calculatedPonus);
+                    attendanceDayesCount = Model[i].EmployeeAttendance.Count;
+                    Discount = (int)Model[i].EmployeeAttendance?.Sum(x => x.discount);
+                    Daycost = Model[i].Salary / (int)ViewBag.WorkingDaysCount;
+                    Total = (Daycost * attendanceDayesCount) + ponus - Discount;
+
+                    <tr>
+                        <td>@(i+1)</td>
+                        <td>@Model[i].Name</td>
+                        <td>@Model[i].Salary</td>
+                        <td>@attendanceDayesCount</td>
+                        <td>@(ViewBag.WorkingDaysCount - attendanceDayesCount)</td>
+                        <td>@ponus</td>
+                        <td>@Discount</td>
+                        <td>@Total</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+

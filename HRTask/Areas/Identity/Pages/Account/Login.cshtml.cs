@@ -115,7 +115,7 @@ namespace HRTask.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var login = _usermanager.FindByEmailAsync(Input.Email).Result;
+                    var login = await _usermanager.FindByEmailAsync(Input.Email);
                     if (login.GroupId_FK != null)
                     {
 
@@ -124,10 +124,22 @@ namespace HRTask.Areas.Identity.Pages.Account
                         List<Claim> claims = new List<Claim>();
                         foreach (var item in rules)
                         {
-                            claims.Add(new Claim(item.Screen.Name.ToLower() + "View", item.View.ToString()));
-                            claims.Add(new Claim(item.Screen.Name.ToLower() + "Create", item.Create.ToString()));
-                            claims.Add(new Claim(item.Screen.Name.ToLower() + "Update", item.Update.ToString()));
-                            claims.Add(new Claim(item.Screen.Name.ToLower() + "Delete", item.Delete.ToString()));
+                            if (item.View)
+                            {
+                                claims.Add(new Claim(item.Screen.Name.ToLower() + "View", item.View.ToString()));
+                            }
+                            if (item.Create)
+                            {
+                                claims.Add(new Claim(item.Screen.Name.ToLower() + "Create", item.Create.ToString()));
+                            }
+                            if (item.Update)
+                            {
+                                claims.Add(new Claim(item.Screen.Name.ToLower() + "Update", item.Update.ToString()));
+                            }
+                            if (item.Delete)
+                            {
+                                claims.Add(new Claim(item.Screen.Name.ToLower() + "Delete", item.Delete.ToString()));
+                            }
                         }
                         await _signInManager.SignInWithClaimsAsync(login, false, claims);
                     }

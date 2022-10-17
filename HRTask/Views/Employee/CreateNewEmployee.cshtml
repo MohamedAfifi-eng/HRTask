@@ -1,6 +1,6 @@
 ﻿@model Employee
 @{
-    ViewData["Title"] = "CreateNewEmployee";
+    ViewData["Title"] = "Add New Employee";
 	string action = Model == null ? "CreateNewEmployee" : "Edit";
 }
 <form method="post" class="form form-horizontal" action="@action">
@@ -8,7 +8,10 @@
 		<h4 class="form-section">
 			<i class="icon-user"></i> Personal Details
 		</h4>
+		@if (Model?.Id!=null)
+		{
 		<input type="hidden" name="Id" value="@Model?.Id" />
+		}
 		<div class="form-group row">
 			<label class="col-md-3 label-control" asp-for="Name" ></label>
 			<div class="col-md-9">
@@ -69,7 +72,7 @@
 	<div class="form-group row">
 		<label class="col-md-3 label-control" asp-for="DateOfContract"></label>
 		<div class="col-md-9">
-			<input type="text" asp-for="DateOfContract" class="form-control" >
+			<input type="date" type="text" asp-for="DateOfContract" class="form-control" >
 			<span asp-validation-for="DateOfContract"></span>
 		</div>
 	</div>
@@ -107,7 +110,20 @@
 			<span asp-validation-for="Salary"></span>
 		</div>
 	</div>
-
+	<div class="form-group row">
+		<label asp-for="discount" class="col-md-3 label-control"></label>
+		<div class="col-md-9">
+			<input asp-for="discount"  class="form-control">
+			<span asp-validation-for="discount"></span>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label asp-for="ExtraTime" class="col-md-3 label-control"></label>
+		<div class="col-md-9">
+			<input asp-for="ExtraTime" class="form-control">
+			<span asp-validation-for="ExtraTime"></span>
+		</div>
+	</div>
 
 
 	<div class="form-group row">
@@ -131,9 +147,9 @@
 		</div>
 	</div>
 	<div class="form-actions">
-		<button type="button" class="btn btn-danger mr-1">
+		<a asp-action="index" class="btn btn-danger mr-1">
 			<i class="icon-trash"></i> Cancel
-		</button>
+		</a>
 		<button type="submit" class="btn btn-success">
 			<i class="icon-note"></i> Save
 		</button>

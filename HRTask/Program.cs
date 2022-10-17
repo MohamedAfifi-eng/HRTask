@@ -3,6 +3,7 @@ using HRTask.Models;
 using HRTask.Services;
 using HRTask.Services.GroupsServices;
 using HRTask.Services.ScreenServices;
+using HRTask.Services.SettingsServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IAnnualVacationService, AnnualVacationService>();
 builder.Services.AddTransient<IEmployeeAttendanceService, EmployeeAttendanceService>();
 builder.Services.AddTransient<IGroupScreensService, GroupScreensService>();
+builder.Services.AddTransient<ISettingService, SettingService>();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;

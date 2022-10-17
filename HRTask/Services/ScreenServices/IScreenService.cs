@@ -2,7 +2,7 @@
 
 namespace HRTask.Services
 {
-    public interface IScreenService:DataService<Screen>
+    public interface IScreenService:IDataService<Screen>
     {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace HRTask.Services
 {
-    public interface IAnnualVacationService:DataService<AnnualVacation>
+    public interface IAnnualVacationService:IDataService<AnnualVacation>
     {
     }
 }

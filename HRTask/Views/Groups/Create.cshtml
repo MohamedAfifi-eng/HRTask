@@ -23,13 +23,12 @@
             <tbody>
         @for (var i = 0; i < ((List<Screen>)ViewBag.screens).Count; i++)
         {
-<tr>
+            <tr>
                         <td>@ViewBag.screens[i].Name <input type="hidden" value="@ViewBag.screens[i].Id" asp-for="GroupScreens[i].ScreenId_FK"/></td>
                         <td><input type="checkbox" asp-for="GroupScreens[i].View" /></td>
                         <td><input type="checkbox" asp-for="GroupScreens[i].Create" /></td>
                         <td><input type="checkbox" asp-for="GroupScreens[i].Update" /></td>
                         <td><input type="checkbox" asp-for="GroupScreens[i].Delete" /></td>
-                        
             </tr>
         }
             </tbody>

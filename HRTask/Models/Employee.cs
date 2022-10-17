@@ -57,6 +57,15 @@ namespace HRTask.Models
         [DataType(DataType.Currency)]
         public int Salary { get; set; }
 
+        [Display(Name = "الخصم لكل ساعة")]
+        [Required(ErrorMessage = "هذا الحقل مطلوب ")]
+        [DataType(DataType.Currency)]
+        public int discount { get; set; }
+
+        [Display(Name = "الوقت الإضافي لكل ساعة")]
+        [Required(ErrorMessage = "هذا الحقل مطلوب ")]
+        [DataType(DataType.Currency)]
+        public int ExtraTime { get; set; }
 
         [Display(Name = "موعد الحضور")]
         [Required(ErrorMessage = "هذا الحقل مطلوب ")]
@@ -73,7 +82,7 @@ namespace HRTask.Models
         public string? Notes { get; set; }
 
         #region Relations
-        public List<EmployeeAttendance> EmployeeAttendance { get; set; }
+        public List<EmployeeAttendance>? EmployeeAttendance { get; set; }
         #endregion
     }
 }

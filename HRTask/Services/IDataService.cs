@@ -1,6 +1,6 @@
 ﻿namespace HRTask.Services
 {
-    public interface DataService<T>
+    public interface IDataService<T>
     {
         public T? Find(int Id);
         public IEnumerable<T> GetAll();

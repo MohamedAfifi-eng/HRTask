@@ -13,6 +13,7 @@ namespace HRTask.Data
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<AnnualVacation> AnnualVacations { get; set; }
         public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
+        public DbSet<Settings> Settings { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
